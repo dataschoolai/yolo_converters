@@ -1,3 +1,5 @@
 tqdm
+numpy
+PyYAML
 #install opencv
-opencv-python
+# opencv-python
