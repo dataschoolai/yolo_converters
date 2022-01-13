@@ -7,7 +7,7 @@ import json
 import argparse
 import yaml
 
-
+LABELS = ['ConcreteCrack','Spalling','Efflorescene','Exposure']
 
 def make_dirs_yolo(dir='YOLOv5/'):
     # Create folders
@@ -64,6 +64,11 @@ def convert_coco_json(label_list=[],output_dir='train', use_segments=False, cls9
             # Write
             if box[2] > 0 and box[3] > 0:  # if w > 0 and h > 0
                 cls = coco80[x['category_id'] - 1] if cls91to80 else x['category_id'] - 1  # class
+                #Get class name from annotation
+                class_ = x['attributes']['class']
+                #Get class index from class name
+                cls=LABELS.index(class_)
+
                 line = cls, *(s if use_segments else box)  # cls, box or segments
                 with open((f'{LABEL_DIR}/{json_file.stem}.txt'), 'a') as file:
                     file.write(('%g ' * len(line)).rstrip() % line + '\n')
@@ -100,7 +105,7 @@ def main():
     #Input labels directory
     input_labels_dir = Path(args.input_dir)
     #list of annotation files
-    list_annotation = list(Path(input_labels_dir).iterdir())[:100]
+    list_annotation = list(Path(input_labels_dir).iterdir())
     random.shuffle(list_annotation)
 
     #Split the dataset into train and validation
@@ -127,8 +132,8 @@ def main():
         'train':'train/images',
         'val':'valid/images',
         'test':'',
-        'nc':1,
-        'names':['damage'],
+        'nc':len(LABELS),
+        'names':LABELS,
         # 'list':range(5)
     }
 
