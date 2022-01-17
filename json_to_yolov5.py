@@ -10,17 +10,17 @@ import yaml
 LABELS = ['ConcreteCrack','Spalling','Efflorescene','Exposure','PaintDamage','SteelDefect']
 LABELS = ['ConcreteCrack']
 
-def make_dirs_yolo(dir='YOLOv5/'):
+def make_dirs_yolo(path:Path):
     # Create folders
-    dir = Path(dir)
-    if dir.exists():
-        shutil.rmtree(dir)  # delete dir
+    path = path/'YOLOv5'
+    if path.exists():
+        shutil.rmtree(path)  # delete dir
     for p in (
-        dir,
-        dir / 'train'/ 'labels', 
-        dir / 'train'/ 'images', 
-        dir / 'valid'/ 'labels', 
-        dir / 'valid'/ 'images', 
+        path,
+        path / 'train'/ 'labels', 
+        path / 'train'/ 'images', 
+        path / 'valid'/ 'labels', 
+        path / 'valid'/ 'images', 
         ):
         p.mkdir(parents=True, exist_ok=True)  # make dir
     return dir
@@ -142,7 +142,7 @@ def main():
         # 'list':range(5)
     }
 
-    with open('YOLOv5/dataset.yaml', 'w') as file:
+    with open(f'{output_dir}/YOLOv5/dataset.yaml', 'w') as file:
         documents = yaml.dump(yolo_config, file)
 
 #Run the main function
