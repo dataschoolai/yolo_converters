@@ -8,11 +8,11 @@ import argparse
 import yaml
 
 LABELS = ['ConcreteCrack','Spalling','Efflorescene','Exposure','PaintDamage','SteelDefect']
-LABELS = ['ConcreteCrack']
+LABELS = ['Exposure']
 
 def make_dirs_yolo(path:Path):
     # Create folders
-    path = path/'YOLOv5'
+    # path = path/'YOLOv5'
     if path.exists():
         shutil.rmtree(path)  # delete dir
     for p in (
@@ -103,7 +103,7 @@ def main():
 
     # Create path for output directory
 
-    output_dir = Path(args.output_dir)
+    output_dir = Path(args.output_dir)/'YOLOv5'
 
     make_dirs_yolo(output_dir) # Create folders
 
@@ -142,7 +142,7 @@ def main():
         # 'list':range(5)
     }
 
-    with open(f'{output_dir}/YOLOv5/dataset.yaml', 'w') as file:
+    with open(f'{output_dir}/dataset.yaml', 'w') as file:
         documents = yaml.dump(yolo_config, file)
 
 #Run the main function
