@@ -7,7 +7,8 @@ import json
 import argparse
 import yaml
 
-LABELS = ['ConcreteCrack','Spalling','Efflorescene','Exposure']
+LABELS = ['ConcreteCrack','Spalling','Efflorescene','Exposure','PaintDamage','SteelDefect']
+LABELS = ['ConcreteCrack']
 
 def make_dirs_yolo(dir='YOLOv5/'):
     # Create folders
@@ -66,8 +67,12 @@ def convert_coco_json(label_list=[],output_dir='train', use_segments=False, cls9
                 cls = coco80[x['category_id'] - 1] if cls91to80 else x['category_id'] - 1  # class
                 #Get class name from annotation
                 class_ = x['attributes']['class']
-                #Get class index from class name
-                cls=LABELS.index(class_)
+                #Get class index from class name check if class is in LABELS
+                if class_ in LABELS:
+                    class_idx = LABELS.index(class_)
+                else:
+                    continue
+              
 
                 line = cls, *(s if use_segments else box)  # cls, box or segments
                 with open((f'{LABEL_DIR}/{json_file.stem}.txt'), 'a') as file:
