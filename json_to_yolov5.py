@@ -8,7 +8,7 @@ import argparse
 import yaml
 
 LABELS = ['ConcreteCrack','Spalling','Efflorescene','Exposure','PaintDamage','SteelDefect']
-LABELS = ['Exposure']
+LABELS = ['Efflorescene']
 
 def make_dirs_yolo(path:Path):
     # Create folders
@@ -93,6 +93,12 @@ def parse_args():
                         help='Output directory',
                         default='YOLOv5',
                         type=str)
+
+    parser.add_argument('--label', 
+    dest='label',
+    help='Label to convert',
+    required=True,
+    )
    
     return parser.parse_args()
 #Define the main function
@@ -106,6 +112,10 @@ def main():
     output_dir = Path(args.output_dir)/'YOLOv5'
 
     make_dirs_yolo(output_dir) # Create folders
+    #label
+    LABELS = [args.label]
+    #Print labels
+    print(f'Converting labels: {LABELS}')
 
     #Input labels directory
     input_labels_dir = Path(args.input_dir)
